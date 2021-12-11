@@ -97,12 +97,12 @@ class Encoder(nn.Module):
     """
     def __init__(self, in_channel=64, out_channel=64):
         super(Encoder, self).__init__()
-        self.res_block = RIB(in_channel=in_channel, out_channel=out_channel)
+        self.res_block = RB(in_channel=in_channel, out_channel=out_channel)
         self.max_pool = nn.MaxPool2d(kernel_size=2)
 
     def forward(self, x):
         x1 = self.res_block(x)
-        x2 = self.pool(x)
+        x2 = self.max_pool(x)
         return x2, x1
 
 class Decoder(nn.Module):
@@ -112,7 +112,7 @@ class Decoder(nn.Module):
     """
     def __init__(self, in_channel=64, out_channel=64):
         super(Decoder, self).__init__()
-        self.res_block = RIB(in_channel=in_channel, out_channel=out_channel)
+        self.res_block = RB(in_channel=in_channel, out_channel=out_channel)
         self.upsample = nn.Upsample(scale_factor=2, mode='nearest')
 
     def forward(self, x, res):
