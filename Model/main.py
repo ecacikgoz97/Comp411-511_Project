@@ -5,7 +5,7 @@ from blocks_util import calculate_parameters
 
 
 if __name__ == '__main__':
-    model = HGSR(upscale=2, n_HG=2)
+    model = HGSR(upscale=2, n_HG=3)
     p = calculate_parameters(model)
     print(p)
     model = model.cuda()
