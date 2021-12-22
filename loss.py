@@ -19,7 +19,7 @@ def get_content_loss(loss_type, nn_func=True, use_cuda=False):
     """
     content loss: [l1, l2, c]
     """
-    
+
     if loss_type == 'l2':
         loss = nn.MSELoss() if nn_func else L2_loss
     elif loss_type == 'l1':
