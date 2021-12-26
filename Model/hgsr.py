@@ -1,6 +1,8 @@
 import torch.nn as nn
 from blocks_model import conv_block, RB, Encoder, Decoder, pixel_shuffle_block
 import math
+from math import sqrt
+
 
 class HG_Block(nn.Module):
     """
@@ -70,6 +72,13 @@ class HGSR(nn.Module):
             HG = HG_Block(n_mid=n_mid)
             setattr(self, 'HG_%d' % i, HG)
             setattr(self, 'upsample_%d' % i, upsample)
+
+
+        # weights initialization
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
+                m.weight.data.normal_(0, sqrt(2. / n))
 
     def forward(self, x):
         x = self.conv(x)
