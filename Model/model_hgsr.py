@@ -129,6 +129,7 @@ class BottomUpBlock(nn.Module):
 
     def forward(self, x, res):
         x = self.upsample(x)
+        print(f"x: {x.shape}, res: {res.shape}")
         return self.res_block(x + res)
 
 
@@ -143,12 +144,12 @@ class HourGlassBlock(nn.Module):
 
         self.down1 = TopDownBlock(64, 128, res_type=res_type)
         self.down2 = TopDownBlock(128, 128, res_type=res_type)
-        self.down3 = TopDownBlock(128, 256, res_type=res_type)
-        self.down4 = TopDownBlock(256, 256, res_type=res_type)
+        #self.down3 = TopDownBlock(128, 256, res_type=res_type)
+        #self.down4 = TopDownBlock(256, 256, res_type=res_type)
 
         res_block = []
         for i in range(n_mid):
-            res_block.append(ResidualBlock(256, 256))
+            res_block.append(ResidualBlock(128, 128))
         self.mid_res = nn.Sequential(*res_block)
 
         self.skip_conv0 = ResidualBlock(ch_in=64, ch_out=64)
@@ -157,8 +158,8 @@ class HourGlassBlock(nn.Module):
         self.skip_conv3 = ResidualBlock(ch_in=256, ch_out=256)
         self.skip_conv4 = ResidualBlock(ch_in=256, ch_out=256)
 
-        self.up1 = BottomUpBlock(256, 256, res_type=res_type)
-        self.up2 = BottomUpBlock(256, 128, res_type=res_type)
+        #self.up1 = BottomUpBlock(256, 256, res_type=res_type)
+        #self.up2 = BottomUpBlock(256, 128, res_type=res_type)
         self.up3 = BottomUpBlock(128, 128, res_type=res_type)
         self.up4 = BottomUpBlock(128, 64, res_type=res_type)
 
@@ -171,13 +172,14 @@ class HourGlassBlock(nn.Module):
     def forward(self, x):
         out, res1 = self.down1(x)
         out, res2 = self.down2(out)
-        out, res3 = self.down3(out)
-        out, res4 = self.down4(out)
+        #out, res3 = self.down3(out)
+        #out, res4 = self.down4(out)
 
         out = self.mid_res(out)
-
-        out = self.up1(out, self.skip_conv4(res4))
-        out = self.up2(out, self.skip_conv3(res3))
+        #print(out.shape)
+        #print(res4.shape)
+        #out = self.up1(out, self.skip_conv4(res4))
+        #out = self.up2(out, self.skip_conv3(res3))
         out = self.up3(out, self.skip_conv2(res2))
         out = self.up4(out, self.skip_conv1(res1))
         out_inter = self.skip_conv0(x) + out
@@ -238,6 +240,8 @@ class HourGlassNetMultiScaleInt(nn.Module):
             setattr(self, 'HG_%d' % i, HG_block)
 
     def forward(self, x):
+        #print(x.shape)
+        #print(x.type())
         x = self.conv_in(x)
         SR_map = []
         result = []
