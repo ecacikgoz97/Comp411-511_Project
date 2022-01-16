@@ -5,7 +5,7 @@ from math import sqrt
 from torch.autograd import Variable
 
 class simpleNet(nn.Module):
-	def __init__(self,Y=True):
+	def __init__(self,Y=False):
 		super(simpleNet, self).__init__()
 		d = 1
 		if Y == False:
@@ -16,12 +16,14 @@ class simpleNet(nn.Module):
 		self.conv3 = nn.Conv2d(in_channels=128, out_channels=128, kernel_size=3, stride=1, padding=1, bias=False)
 		self.conv4 = nn.Conv2d(in_channels=128, out_channels=128, kernel_size=3, stride=1, padding=1, bias=False)
 		self.conv5 = nn.Conv2d(in_channels=128, out_channels=128, kernel_size=3, stride=1, padding=1, bias=False)
-		
 		self.conv6 = nn.Conv2d(in_channels=128, out_channels=128, kernel_size=3, stride=1, padding=1, bias=False)
-
+		self.up1 = nn.PixelShuffle(2)
+		self.up2 = nn.PixelShuffle(2)
 	
-		self.output = nn.Conv2d(in_channels=128, out_channels=d, kernel_size=3, stride=1, padding=1, bias=False)
+		self.output = nn.Conv2d(in_channels=8, out_channels=d, kernel_size=3, stride=1, padding=1, bias=False)
 		self.relu = nn.ReLU(inplace=True)
+        
+
 
 		# weights initialization
 		for m in self.modules():
@@ -40,10 +42,11 @@ class simpleNet(nn.Module):
 		out = self.conv4(self.relu(out))
 		out = self.conv5(self.relu(out))
 		out = self.conv6(self.relu(out))
+		out = self.up2(self.up1(out))
 
 		#out = torch.add(out, inputs)
 
 		out = self.output(self.relu(out))
 		
-		out = torch.add(out, residual)
+# 		out = torch.add(out, residual)
 		return out

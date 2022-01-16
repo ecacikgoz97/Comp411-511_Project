@@ -129,7 +129,7 @@ class BottomUpBlock(nn.Module):
 
     def forward(self, x, res):
         x = self.upsample(x)
-        print(f"x: {x.shape}, res: {res.shape}")
+#         print(f"x: {x.shape}, res: {res.shape}")
         return self.res_block(x + res)
 
 
