@@ -10,17 +10,17 @@ class simpleNet(nn.Module):
 		d = 1
 		if Y == False:
 			d = 3
-		self.input = nn.Conv2d(in_channels=d, out_channels=128, kernel_size=3, stride=1, padding=1, bias=False)
-		self.conv1 = nn.Conv2d(in_channels=128, out_channels=128, kernel_size=3, stride=1, padding=1, bias=False)
-		self.conv2 = nn.Conv2d(in_channels=128, out_channels=128, kernel_size=3, stride=1, padding=1, bias=False)
-		self.conv3 = nn.Conv2d(in_channels=128, out_channels=128, kernel_size=3, stride=1, padding=1, bias=False)
-		self.conv4 = nn.Conv2d(in_channels=128, out_channels=128, kernel_size=3, stride=1, padding=1, bias=False)
-		self.conv5 = nn.Conv2d(in_channels=128, out_channels=128, kernel_size=3, stride=1, padding=1, bias=False)
-		self.conv6 = nn.Conv2d(in_channels=128, out_channels=128, kernel_size=3, stride=1, padding=1, bias=False)
+		self.input = nn.Conv2d(in_channels=d, out_channels=128, kernel_size=3, stride=1, padding=1,   bias=True)
+		self.conv1 = nn.Conv2d(in_channels=128, out_channels=128, kernel_size=3, stride=1, padding=1, bias=True)
+		self.conv2 = nn.Conv2d(in_channels=128, out_channels=128, kernel_size=3, stride=1, padding=1, bias=True)
+		self.conv3 = nn.Conv2d(in_channels=128, out_channels=128, kernel_size=3, stride=1, padding=1, bias=True)
+		self.conv4 = nn.Conv2d(in_channels=128, out_channels=128, kernel_size=3, stride=1, padding=1, bias=True)
+		self.conv5 = nn.Conv2d(in_channels=128, out_channels=128, kernel_size=3, stride=1, padding=1, bias=True)
+		self.conv6 = nn.Conv2d(in_channels=128, out_channels=128, kernel_size=3, stride=1, padding=1, bias=True)
 		self.up1 = nn.PixelShuffle(2)
 		self.up2 = nn.PixelShuffle(2)
 	
-		self.output = nn.Conv2d(in_channels=8, out_channels=d, kernel_size=3, stride=1, padding=1, bias=False)
+		self.output = nn.Conv2d(in_channels=8, out_channels=d, kernel_size=3, stride=1, padding=1, bias=True)
 		self.relu = nn.ReLU(inplace=True)
         
 
