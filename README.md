@@ -12,3 +12,4 @@
 **practival_run.py** A basic code that no need manuel set-up during training for time consuming.<br>
 **simplenet.py** is our model.<br>
 
+One can download all datasets Set5, Set14, Urban100, BSD use from => https://github.com/jbhuang0604/SelfExSR
